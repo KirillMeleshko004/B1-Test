@@ -1,4 +1,6 @@
-namespace FileWorker.Core
+using FileWorker.Services;
+
+namespace FileWorker.UI
 {
     public class Interactor
     {
@@ -27,7 +29,7 @@ namespace FileWorker.Core
             if (shouldCreate)
             {
                 Console.WriteLine("Generating files...");
-                var fg = new FileGenerator(_dir!);
+                var fg = new FileGenerationService(_dir!);
                 await fg.Generate(100, 100000);
                 Console.WriteLine("Generated 100 files");
             }

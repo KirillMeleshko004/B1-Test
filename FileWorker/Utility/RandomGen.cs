@@ -1,4 +1,4 @@
-namespace FileWorker.Core
+namespace FileWorker.Utility
 {
     public static class RandomGen
     {

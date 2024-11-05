@@ -1,4 +1,6 @@
-﻿namespace FileWorker.Core
+﻿using FileWorker.UI;
+
+namespace FileWorker
 {
     public class Program
     {

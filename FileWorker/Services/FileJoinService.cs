@@ -1,4 +1,4 @@
-namespace FileWorker.Core
+namespace FileWorker.Services
 {
     public class FileJoinService(string path)
     {

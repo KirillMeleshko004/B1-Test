@@ -1,8 +1,10 @@
+using System.Globalization;
 using System.Text;
+using FileWorker.Utility;
 
-namespace FileWorker.Core
+namespace FileWorker.Services
 {
-    public class FileGenerator(string path)
+    public class FileGenerationService(string path)
     {
         private enum Lang
         {
@@ -23,10 +25,12 @@ namespace FileWorker.Core
 
         public async Task Generate(int filesCount, int rowsCount)
         {
+            Console.WriteLine();
             DirectoryInfo dirInfo = new(path);
             dirInfo?.Create();
 
             Task[] tasks = new Task[filesCount];
+
             for (int file = 0; file < filesCount; file++)
             {
                 var ind = file;
@@ -34,21 +38,25 @@ namespace FileWorker.Core
                 {
                     var fileName = $"{ind + 1}.txt";
                     var fullPath = Path.Combine(path, fileName);
-                    using var writer = new StreamWriter(fullPath, false);
-
-                    for (int row = 0; row < rowsCount; row++)
+                    using (var writer = new StreamWriter(fullPath, false))
                     {
-                        writer.WriteLine(GenerateRow());
+                        for (int row = 0; row < rowsCount; row++)
+                        {
+                            writer.WriteLine(GenerateRow());
+                        }
                     }
+
+                    Console.WriteLine($"Created file {fileName}");
                 });
             }
 
             await Task.WhenAll(tasks);
+            Console.WriteLine();
         }
 
         private static string GenerateRow()
         {
-            return $"{RandomDate():dd.MM.yyyy}||{RandomString(10, Lang.Latin)}||{RandomString(10, Lang.Cyrillic)}||{RandomEven(100000000)}||{RandomDouble(1, 20)}||";
+            return $"{RandomDate():dd.MM.yyyy}||{RandomString(10, Lang.Latin)}||{RandomString(10, Lang.Cyrillic)}||{RandomEven(100000000)}||{RandomDouble(1, 20, 8).ToString("F8", CultureInfo.InvariantCulture)}||";
         }
 
         private static DateTime RandomDate()
@@ -76,11 +84,11 @@ namespace FileWorker.Core
             return RandomGen.Next(min, max / 2) * 2;
         }
 
-        private static double RandomDouble(int min, int max)
+        private static double RandomDouble(int min, int max, int precision = 8)
         {
             var randDouble = RandomGen.NextDouble();
             var ranged = randDouble * (max - min) + min;
-            var rounded = double.Round(ranged, 8);
+            var rounded = double.Round(ranged, precision);
 
             return rounded;
         }
