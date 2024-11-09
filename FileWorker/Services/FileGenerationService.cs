@@ -23,6 +23,8 @@ namespace FileWorker.Services
             for (int file = 0; file < filesCount; file++)
             {
                 var ind = file;
+
+                //Generating each file in separated task executed on ThreadPool
                 tasks[file] = Task.Run(() =>
                 {
                     var fileName = $"{ind + 1}.txt";

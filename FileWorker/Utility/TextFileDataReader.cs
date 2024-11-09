@@ -60,6 +60,7 @@ namespace FileWorker.Utility
                 }
             }
 
+            //If row is invalid, return Read() result from next line
             return !invalidRow || Read();
         }
 
@@ -73,6 +74,8 @@ namespace FileWorker.Utility
             _sr.Close();
         }
 
+        //Not implementing bunch of methods since those class has only one purpose in program –
+        //to be used in SqlBulkCopy
         #region Non-implemented since not used
 
         public object this[int i] => throw new NotImplementedException();

@@ -4,6 +4,7 @@ namespace FileWorker.Utility
     {
         private static readonly Random _seedGen = new();
 
+        //ThreadStatic since Random is not thread-safe
         [ThreadStatic]
         private static Random? _rand;
 

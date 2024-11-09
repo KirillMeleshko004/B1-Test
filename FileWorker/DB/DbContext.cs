@@ -52,12 +52,14 @@ namespace FileWorker.DB
 
         public async Task ImportFile(string filePath)
         {
+            //Using SqlBulkCopy since import of hundreds/millions of rows with INSERT could take a lot of time
             var rowsCount = await CountFileLines(filePath);
 
             var dataReader = new TextFileDataReader(filePath, _columnConstraints, _columnConverts);
 
             using var bulkCopy = new SqlBulkCopy(_connectionString, SqlBulkCopyOptions.Default);
 
+            //All columns in file placed in same positions as columns at DB
             bulkCopy.ColumnMappings.Add(0, 0);
             bulkCopy.ColumnMappings.Add(1, 1);
             bulkCopy.ColumnMappings.Add(2, 2);

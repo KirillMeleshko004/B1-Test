@@ -28,6 +28,8 @@ namespace FileWorker.Services
 
             var toExclude = exclude?.Split(' ');
 
+            //Using separated methods for almost identical operations since
+            //Unnecessary check if nothing should be excluded adds a lot to execution time thanks to 100000 in-loop execution
             if (toExclude == null || toExclude.Length == 0)
             {
                 await JoinFiles();
@@ -45,6 +47,7 @@ namespace FileWorker.Services
         {
             var tasks = new List<Task>(_files.Length);
 
+            //Reading rows from each file in separated task on a ThreadPool
             foreach (var file in _files)
             {
                 tasks.Add(Task.Run(async () =>
@@ -56,6 +59,8 @@ namespace FileWorker.Services
                         lines.Add(row);
                     }
 
+                    //Writing to a single file from multiple threads can be very slow and using a complex locking mechanism
+                    //Thats why FileWriter class with thread-safe InsertRows with simple lock used
                     _fw.InsertRows(lines);
                 }));
             }
@@ -69,6 +74,7 @@ namespace FileWorker.Services
             int excluded = 0;
             var tasks = new List<Task>(_files.Length);
 
+            //Reading rows from each file in separated task on a ThreadPool
             foreach (var file in _files)
             {
                 tasks.Add(Task.Run(async () =>
@@ -87,7 +93,11 @@ namespace FileWorker.Services
                         linesToAdd.Add(row);
                     }
 
+                    //Writing to a single file from multiple threads can be very slow and using a complex locking mechanism
+                    //Thats why FileWriter class with thread-safe InsertRows with simple lock used
                     _fw.InsertRows(linesToAdd);
+
+                    //Incrementing total excluded count only after loop execution to prevent race conditions between threads
                     Interlocked.Add(ref excluded, localExcluded);
                 }));
             }

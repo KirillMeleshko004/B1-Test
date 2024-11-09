@@ -13,6 +13,7 @@ namespace FileWorker.Utility
 
         public void InsertRows(IEnumerable<string> rows)
         {
+            //Lock to limit single file usage to only one thread
             lock (_lock)
             {
                 File.AppendAllLines(_path, rows);

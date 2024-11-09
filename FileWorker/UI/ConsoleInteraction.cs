@@ -42,6 +42,7 @@ namespace FileWorker.UI
 
         public void Clear()
         {
+            //Default VS Code debug fails why Console.Clear() called
             if (!Console.IsInputRedirected) Console.Clear();
 
             Console.WriteLine("".PadRight(20, '-'));
