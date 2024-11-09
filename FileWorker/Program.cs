@@ -1,6 +1,4 @@
-﻿using FileWorker.DB;
-using FileWorker.UI;
-using Microsoft.Extensions.DependencyInjection;
+﻿using FileWorker.UI;
 
 namespace FileWorker
 {

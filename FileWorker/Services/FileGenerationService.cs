@@ -1,5 +1,3 @@
-using System.Globalization;
-using System.Text;
 using FileWorker.UI.Interfaces;
 using FileWorker.Utility;
 

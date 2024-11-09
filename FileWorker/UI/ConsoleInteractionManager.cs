@@ -9,10 +9,9 @@ namespace FileWorker.UI
         private readonly int[] _allowedOptions = [0, 1, 2, 3, 4];
         public async Task<bool> StartInteractionAsync()
         {
-            var option = 0;
-
             try
             {
+                int option;
                 do
                 {
                     option = MenuInteraction();

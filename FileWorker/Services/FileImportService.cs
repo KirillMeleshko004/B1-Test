@@ -1,8 +1,5 @@
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using FileWorker.DB;
 using FileWorker.UI.Interfaces;
-using Microsoft.Data.SqlClient;
 
 namespace FileWorker.Services
 {
