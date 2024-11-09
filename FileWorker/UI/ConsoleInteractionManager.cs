@@ -34,6 +34,11 @@ namespace FileWorker.UI
                                 await FileImportInteraction();
                                 break;
                             }
+                        case 4:
+                            {
+                                await AggregationInteraction();
+                                break;
+                            }
                         case 0: break;
                     }
                 }
@@ -171,6 +176,24 @@ namespace FileWorker.UI
             sw.Stop();
 
             interaction.ShowMessage($"File import completed in {sw.ElapsedMilliseconds}ms.");
+            interaction.GetConfirmation("Press any key to continue...");
+            interaction.Clear();
+        }
+
+        private async Task AggregationInteraction()
+        {
+            using var interaction = new ConsoleInteraction("Sum and median calculation.");
+
+            var service = new AggregationService(interaction);
+            var sw = new Stopwatch();
+
+            sw.Start();
+            var (intSum, floatMedian) = await service.CalculateSumAndMedian();
+            sw.Stop();
+
+            interaction.ShowMessage($"Sum and median calculation completed in {sw.ElapsedMilliseconds}ms.");
+            interaction.ShowMessage($"Integer numbers sum: {intSum}.");
+            interaction.ShowMessage($"Float numbers median: {floatMedian}.");
             interaction.GetConfirmation("Press any key to continue...");
             interaction.Clear();
         }

@@ -1,8 +1,7 @@
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
-namespace FileWorker.DB
+namespace FileWorker.Utility
 {
     public class TextFileDataReader : IDataReader
     {
@@ -212,4 +211,5 @@ namespace FileWorker.DB
         #endregion
 
     }
+
 }

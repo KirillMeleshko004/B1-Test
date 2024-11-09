@@ -10,9 +10,6 @@ namespace FileWorker.Services
     {
         private string _filePath = filePath;
 
-
-        private const string DATA_FILE_REGEX = @"([0-9]|[1-9][0-9]|100).txt$";
-
         public async Task ImportFiles()
         {
             _interaction.ShowMessage("File import starts.");
@@ -22,9 +19,9 @@ namespace FileWorker.Services
                 _interaction.ShowMessage("Selecter file doesn't exist.");
             }
 
-            var dbManager = new DbManager(_interaction);
+            var dbContext = await DbContext.CreateAsync(_interaction);
 
-            await dbManager.ImportFile(_filePath);
+            await dbContext.ImportFile(_filePath);
         }
 
     }
