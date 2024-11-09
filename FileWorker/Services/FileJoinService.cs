@@ -1,76 +1,99 @@
+using System.Text.RegularExpressions;
+using FileWorker.UI.Interfaces;
+using FileWorker.Utility;
+
 namespace FileWorker.Services
 {
-    public class FileJoinService(string path)
+    public class FileJoinService(IInteraction interaction, string path, string unionFile) : BaseService(interaction)
     {
-        private readonly string _path = path;
-        private const string DEFAULT_UNION_PATH = "Union";
+        private const string DATA_FILE_REGEX = @"([0-9]|[1-9][0-9]|100).txt$";
 
+        private readonly string _path = path;
+        private readonly string _unionFile = unionFile;
         private string[] _files = [];
 
-        /// <summary>
-        /// Join all files from provided directory into one and exclude all rows containing specified string
-        /// </summary>
-        /// <param name="exclude"></param>
-        /// <returns>Number of excluded rows</returns>
-        public async Task<int> JoinFiles(string fileName = "Union.txt", string? exclude = null)
+        private readonly FileWriter _fw = new(unionFile);
+
+        public async Task JoinFiles(string? exclude = null)
         {
-            var unionName = fileName;
+            _interaction.ShowMessage("File joining starts.");
 
-            _files = Directory.GetFiles(_path);
+            _files = Directory.GetFiles(_path).Where(f => Regex.IsMatch(f, DATA_FILE_REGEX)).ToArray();
 
-            string outputPath = Path.Combine(_path, DEFAULT_UNION_PATH);
-
-            DirectoryInfo outputDir = new(outputPath);
-            outputDir?.Create();
-            using var output = new StreamWriter(Path.Combine(outputPath, unionName), false);
+            if (_files.Length == 0)
+            {
+                _interaction.ShowMessage("Provided path contains no files with matching names.");
+                return;
+            }
 
             var toExclude = exclude?.Split(' ');
 
             if (toExclude == null || toExclude.Length == 0)
             {
-                await JoinFiles(output);
-                return 0;
+                await JoinFiles();
             }
             else
             {
-                return await JoinFiles(output, toExclude);
+                var excluded = await JoinFiles(toExclude);
+                _interaction.ShowMessage($"Excluded {excluded} rows from result.");
             }
+
+            _interaction.ShowMessage($"Union file path {new FileInfo(_unionFile).FullName}.");
         }
 
-        private async Task JoinFiles(StreamWriter output)
+        private async Task JoinFiles()
         {
-            foreach (var file in _files)
-            {
-                await foreach (var row in File.ReadLinesAsync(file))
-                {
-                    await output.WriteLineAsync(row);
-                }
-            }
-        }
+            var tasks = new List<Task>(_files.Length);
 
-        private async Task<int> JoinFiles(StreamWriter output, string[] exclude)
-        {
-            int excluded = 0;
             foreach (var file in _files)
             {
-                await foreach (var row in File.ReadLinesAsync(file))
+                tasks.Add(Task.Run(async () =>
                 {
-                    async Task ExclusionLoop()
+                    _interaction.ShowMessage($"Proceeding file \"{file}\".");
+                    var lines = new List<string>(100000);
+                    await foreach (var row in File.ReadLinesAsync(file))
                     {
-                        foreach (var el in exclude)
-                        {
-                            if (row.Contains(el))
-                            {
-                                excluded++;
-                                return;
-                            }
-                        }
-                        await output.WriteLineAsync(row);
+                        lines.Add(row);
                     }
 
-                    await ExclusionLoop();
-                }
+                    _fw.InsertRows(lines);
+                }));
             }
+
+            await Task.WhenAll(tasks);
+
+        }
+
+        private async Task<int> JoinFiles(string[] toExclude)
+        {
+            int excluded = 0;
+            var tasks = new List<Task>(_files.Length);
+
+            foreach (var file in _files)
+            {
+                tasks.Add(Task.Run(async () =>
+                {
+                    _interaction.ShowMessage($"Proceeding file \"{file}\".");
+                    var linesToAdd = new List<string>(100000);
+                    var localExcluded = 0;
+
+                    await foreach (var row in File.ReadLinesAsync(file))
+                    {
+                        if (toExclude.Any(ex => row.Contains(ex)))
+                        {
+                            localExcluded++;
+                            continue;
+                        }
+                        linesToAdd.Add(row);
+                    }
+
+                    _fw.InsertRows(linesToAdd);
+                    Interlocked.Add(ref excluded, localExcluded);
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+
             return excluded;
         }
     }

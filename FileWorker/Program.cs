@@ -1,14 +1,18 @@
-﻿using FileWorker.UI;
+﻿using FileWorker.DB;
+using FileWorker.UI;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FileWorker
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
-            Console.WriteLine("File Worker");
+            var manager = new ConsoleInteractionManager();
 
-            Interactor.StartInteraction().Wait();
+            var result = await manager.StartInteractionAsync();
+
+            Console.WriteLine($"Proggram finished with code {(result ? 0 : 1)}");
         }
 
     }

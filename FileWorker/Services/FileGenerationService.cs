@@ -1,33 +1,24 @@
 using System.Globalization;
 using System.Text;
+using FileWorker.UI.Interfaces;
 using FileWorker.Utility;
 
 namespace FileWorker.Services
 {
-    public class FileGenerationService(string path)
+    public class FileGenerationService(IInteraction interaction, string path) : BaseService(interaction)
     {
-        private enum Lang
-        {
-            Latin,
-            Cyrillic
-        }
-
-        private static readonly Dictionary<Lang, char[]> _alphabet = new()
-        {
-            {
-                Lang.Latin,
-                ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'] },
-            {
-                Lang.Cyrillic,
-                ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я']
-            },
-        };
+        private readonly string _path = path;
 
         public async Task Generate(int filesCount, int rowsCount)
         {
-            Console.WriteLine();
-            DirectoryInfo dirInfo = new(path);
-            dirInfo?.Create();
+            _interaction.ShowMessage("File generation starts.");
+
+            DirectoryInfo dirInfo = new(_path);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+                _interaction.ShowMessage($"Directory \"{dirInfo.FullName}\" was created.");
+            }
 
             Task[] tasks = new Task[filesCount];
 
@@ -37,60 +28,30 @@ namespace FileWorker.Services
                 tasks[file] = Task.Run(() =>
                 {
                     var fileName = $"{ind + 1}.txt";
-                    var fullPath = Path.Combine(path, fileName);
+                    var fullPath = Path.Combine(_path, fileName);
+
+                    var isReplaced = File.Exists(fullPath);
+
                     using (var writer = new StreamWriter(fullPath, false))
                     {
                         for (int row = 0; row < rowsCount; row++)
                         {
-                            writer.WriteLine(GenerateRow());
+                            writer.WriteLine(DataGen.GenerateDataRow());
                         }
                     }
 
-                    Console.WriteLine($"Created file {fileName}");
+                    if (isReplaced)
+                    {
+                        _interaction.ShowMessage($"Replaced file \"{fileName}\" {Environment.CurrentManagedThreadId}.");
+                    }
+                    else
+                    {
+                        _interaction.ShowMessage($"Created file \"{fileName}\" {Environment.CurrentManagedThreadId}.");
+                    }
                 });
             }
 
             await Task.WhenAll(tasks);
-            Console.WriteLine();
-        }
-
-        private static string GenerateRow()
-        {
-            return $"{RandomDate():dd.MM.yyyy}||{RandomString(10, Lang.Latin)}||{RandomString(10, Lang.Cyrillic)}||{RandomEven(100000000)}||{RandomDouble(1, 20, 8).ToString("F8", CultureInfo.InvariantCulture)}||";
-        }
-
-        private static DateTime RandomDate()
-        {
-            var startDate = DateTime.Today.AddYears(-5);
-            int range = (DateTime.Today - startDate).Days;
-            return startDate.AddDays(RandomGen.Next(range));
-        }
-
-        private static string RandomString(int length, Lang lang)
-        {
-            var res = new StringBuilder();
-            var alpha = _alphabet[lang];
-
-            for (int i = 0; i < length; i++)
-            {
-                res.Append(alpha[RandomGen.Next(alpha.Length)]);
-            }
-
-            return res.ToString();
-        }
-
-        private static int RandomEven(int max, int min = 0)
-        {
-            return RandomGen.Next(min, max / 2) * 2;
-        }
-
-        private static double RandomDouble(int min, int max, int precision = 8)
-        {
-            var randDouble = RandomGen.NextDouble();
-            var ranged = randDouble * (max - min) + min;
-            var rounded = double.Round(ranged, precision);
-
-            return rounded;
         }
     }
 }

@@ -1,35 +1,31 @@
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using FileWorker.DB;
+using FileWorker.UI.Interfaces;
+using Microsoft.Data.SqlClient;
+
 namespace FileWorker.Services
 {
-    public class FileImportService
+    public class FileImportService(IInteraction interaction, string filePath) : BaseService(interaction)
     {
-        public FileImportService()
-        {
-            
-        }
+        private string _filePath = filePath;
+
+
+        private const string DATA_FILE_REGEX = @"([0-9]|[1-9][0-9]|100).txt$";
+
         public async Task ImportFiles()
         {
-            // string connectionString = @"Server=localhost\SQLEXPRESS;Database=Test;Trusted_Connection=True;TrustServerCertificate=True;";
-            // SqlConnection connection = new(connectionString);
-            // try
-            // {
-            //     // Открываем подключение
-            //     await connection.OpenAsync();
-            //     Console.WriteLine("Подключение открыто");
-            // }
-            // catch (SqlException ex)
-            // {
-            //     Console.WriteLine(ex.Message);
-            // }
-            // finally
-            // {
-            //     // если подключение открыто
-            //     if (connection.State == ConnectionState.Open)
-            //     {
-            //         // закрываем подключение
-            //         await connection.CloseAsync();
-            //         Console.WriteLine("Подключение закрыто...");
-            //     }
-            // }
+            _interaction.ShowMessage("File import starts.");
+
+            if (!File.Exists(_filePath))
+            {
+                _interaction.ShowMessage("Selecter file doesn't exist.");
+            }
+
+            var dbManager = new DbManager(_interaction);
+
+            await dbManager.ImportFile(_filePath);
         }
+
     }
 }

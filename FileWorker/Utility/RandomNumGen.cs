@@ -1,6 +1,6 @@
 namespace FileWorker.Utility
 {
-    public static class RandomGen
+    public static class RandomNumGen
     {
         private static readonly Random _seedGen = new();
 
