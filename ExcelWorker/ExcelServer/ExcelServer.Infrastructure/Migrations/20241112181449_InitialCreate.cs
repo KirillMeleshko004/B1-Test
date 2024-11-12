@@ -22,12 +22,12 @@ namespace ExcelServer.Infrastructure.Migrations
                     Currency = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OpeningBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    OpeningBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverDebit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverCredit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false)
+                    OpeningBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    OpeningBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverDebit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverCredit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,12 +44,12 @@ namespace ExcelServer.Infrastructure.Migrations
                     TurnoverDocumentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OpeningBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    OpeningBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverDebit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverCredit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false)
+                    OpeningBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    OpeningBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverDebit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverCredit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,12 +71,12 @@ namespace ExcelServer.Infrastructure.Migrations
                     SummaryClassId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OpeningBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    OpeningBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverDebit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverCredit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false)
+                    OpeningBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    OpeningBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverDebit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverCredit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,12 +98,12 @@ namespace ExcelServer.Infrastructure.Migrations
                     SummaryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OpeningBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    OpeningBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverDebit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    TurnoverCredit = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceAsset = table.Column<decimal>(type: "MONEY", nullable: false),
-                    ClosingBalanceLiability = table.Column<decimal>(type: "MONEY", nullable: false)
+                    OpeningBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    OpeningBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverDebit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    TurnoverCredit = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceAsset = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false),
+                    ClosingBalanceLiability = table.Column<decimal>(type: "decimal(30,2)", precision: 30, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {

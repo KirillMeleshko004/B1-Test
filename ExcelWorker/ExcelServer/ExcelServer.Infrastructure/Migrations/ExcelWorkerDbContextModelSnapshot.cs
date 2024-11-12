@@ -29,10 +29,12 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ClosingBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("ClosingBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -44,19 +46,23 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpeningBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("OpeningBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<Guid>("SummaryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TurnoverCredit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("TurnoverDebit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.HasKey("Id");
 
@@ -72,10 +78,12 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ClosingBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("ClosingBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -87,19 +95,23 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpeningBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("OpeningBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<Guid>("SummaryClassId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TurnoverCredit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("TurnoverDebit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.HasKey("Id");
 
@@ -115,10 +127,12 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("ClosingBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("ClosingBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -130,21 +144,25 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("OpeningBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("OpeningBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
 
                     b.Property<decimal>("TurnoverCredit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("TurnoverDebit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<Guid>("TurnoverDocumentId")
                         .HasColumnType("uniqueidentifier");
@@ -164,14 +182,16 @@ namespace ExcelServer.Infrastructure.Migrations
 
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
 
                     b.Property<decimal>("ClosingBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("ClosingBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -188,21 +208,25 @@ namespace ExcelServer.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("OpeningBalanceAsset")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("OpeningBalanceLiability")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(600)
+                        .HasColumnType("nvarchar(600)");
 
                     b.Property<decimal>("TurnoverCredit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.Property<decimal>("TurnoverDebit")
-                        .HasColumnType("MONEY");
+                        .HasPrecision(30, 2)
+                        .HasColumnType("decimal(30,2)");
 
                     b.HasKey("Id");
 

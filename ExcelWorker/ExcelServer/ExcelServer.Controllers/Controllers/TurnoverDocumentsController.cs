@@ -1,5 +1,7 @@
+using System.Text.Json;
 using AutoMapper;
 using ExcelServer.Controllers.ViewModels;
+using ExcelServer.UseCases.Common.RequestFeatures;
 using ExcelServer.UseCases.TurnoverDocuments.Commands;
 using ExcelServer.UseCases.TurnoverDocuments.DTOs;
 using ExcelServer.UseCases.TurnoverDocuments.Queries;
@@ -30,6 +32,22 @@ namespace ExcelServer.Controllers
             var query = new GetDocumentDetailsQuery(id);
 
             var result = await _sender.Send(query, cancellationToken);
+
+            return Ok(result);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] RequestParameters parameters, CancellationToken cancellationToken)
+        {
+            var query = new ListDocumentsQuery(parameters);
+
+            var result = await _sender.Send(query, cancellationToken);
+
+            Response.Headers.TryAdd("X-Pagination",
+               JsonSerializer.Serialize(result.Pages));
+
+            Response.Headers.TryAdd("Access-Control-Expose-Headers", "X-Pagination");
 
             return Ok(result);
         }

@@ -1,0 +1,12 @@
+.importContainer {
+  height: 100px;
+  padding: 10px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.uploadBtn {
+  width: 200px;
+}

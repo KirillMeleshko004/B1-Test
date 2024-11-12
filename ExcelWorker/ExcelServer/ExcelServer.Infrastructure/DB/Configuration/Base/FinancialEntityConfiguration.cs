@@ -12,24 +12,24 @@ namespace ExcelServer.Infrastructure.DB.Configuration.Base
 
             builder.Property(fe => fe.OpeningBalanceAsset)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
             builder.Property(fe => fe.OpeningBalanceLiability)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
 
             builder.Property(fe => fe.TurnoverDebit)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
             builder.Property(fe => fe.TurnoverCredit)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
 
             builder.Property(fe => fe.ClosingBalanceAsset)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
             builder.Property(fe => fe.ClosingBalanceLiability)
                 .IsRequired()
-                .HasColumnType("MONEY");
+                .HasPrecision(30, 2);
         }
     }
 }

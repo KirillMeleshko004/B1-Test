@@ -4,6 +4,6 @@ namespace ExcelServer.Controllers.ViewModels
 {
     public record TurnoverDocumentUploadViewModel
     {
-        public IFormFile Document { get; set; } = null!;
+        public IFormFile ExcelDocument { get; set; } = null!;
     }
 }

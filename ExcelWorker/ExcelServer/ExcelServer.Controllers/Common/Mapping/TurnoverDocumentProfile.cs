@@ -15,7 +15,7 @@ namespace ExcelServer.Controllers.Common.Mapping
             CreateMap<TurnoverDocumentUploadViewModel, TurnoverDocumentUploadDto>()
                 .ForMember(dto => dto.DocumentName, options =>
                 {
-                    options.MapFrom(vm => Path.GetFileName(vm.Document.FileName));
+                    options.MapFrom(vm => Path.GetFileName(vm.ExcelDocument.FileName));
                 });
         }
 

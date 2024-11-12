@@ -8,9 +8,17 @@ namespace ExcelServer.UseCases.Common.Mapping
     {
         public TurnoverDocumentProfile()
         {
-            CreateMap<TurnoverDocument, TurnoverDocumentDto>();
+            CreateMap<TurnoverDocument, TurnoverDocumentDto>()
+                .ForMember(dto => dto.CreationDate, options =>
+                {
+                    options.MapFrom(e => e.CreatedAt);
+                });
 
-            CreateMap<TurnoverDocument, TurnoverDocumentDetailsDto>();
+            CreateMap<TurnoverDocument, TurnoverDocumentDetailsDto>()
+                .ForMember(dto => dto.CreationDate, options =>
+                {
+                    options.MapFrom(e => e.CreatedAt);
+                });
         }
     }
 }
