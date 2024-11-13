@@ -1,4 +1,5 @@
 using AutoMapper;
+using ExcelServer.UseCases.Common.Exceptions;
 using ExcelServer.UseCases.Common.Interfaces.Repository;
 using ExcelServer.UseCases.TurnoverDocuments.DTOs;
 using MediatR;
@@ -22,6 +23,11 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Queries
         public async Task<TurnoverDocumentDetailsDto> Handle(GetDocumentDetailsQuery request, CancellationToken cancellationToken)
         {
             var td = await _unitOfWork.TurnoverDocuments.GetDetailedTurnoverDocument(td => td.Id.Equals(request.Id), cancellationToken);
+
+            if (td == null)
+            {
+                throw new TurnoverDocumentNotFoundException(request.Id);
+            }
 
             var dto = _mapper.Map<TurnoverDocumentDetailsDto>(td);
 

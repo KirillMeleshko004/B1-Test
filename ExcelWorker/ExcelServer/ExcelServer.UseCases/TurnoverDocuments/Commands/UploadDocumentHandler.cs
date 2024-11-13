@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 {
@@ -29,7 +30,16 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
             {
                 using (var ms = new MemoryStream(request.Document.ExcelDocument))
                 {
-                    HSSFWorkbook book = new HSSFWorkbook(ms);
+                    IWorkbook book;
+                    if (request.Document.DocumentName.EndsWith(".xls"))
+                    {
+                        book = new HSSFWorkbook(ms);
+                    }
+                    else
+                    {
+                        book = new XSSFWorkbook(ms);
+                    }
+
                     var sheet = book.GetSheetAt(0);
 
                     var td = ExtractGeneralInformation(sheet);
@@ -58,13 +68,13 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
         {
             var td = new TurnoverDocument
             {
-                BankName = sheet.GetRow(0).GetCell(0).ToString(),
+                BankName = sheet.GetRow(0).GetCell(0).ToString()!,
 
                 Title = $@"{sheet.GetRow(1).GetCell(0)} {sheet.GetRow(2).GetCell(0)} {sheet.GetRow(3).GetCell(0)}",
 
-                Date = DateTime.Parse(sheet.GetRow(5).GetCell(0).ToString()),
+                Date = DateTime.Parse(sheet.GetRow(5).GetCell(0).ToString()!),
 
-                Currency = sheet.GetRow(5).GetCell(6).ToString(),
+                Currency = sheet.GetRow(5).GetCell(6).ToString()!,
 
                 SummaryClasses = []
             };
@@ -178,7 +188,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
         private static bool TryParseSummaryClassTitle(IRow row, out string title)
         {
-            var first = row.GetCell(0).ToString();
+            var first = row.GetCell(0).ToString()!;
 
             if (!first.StartsWith("КЛАСС"))
             {
@@ -192,7 +202,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
         private static bool TryParseSummaryClass(IRow row, out decimal[] values)
         {
-            var first = row.GetCell(0).ToString();
+            var first = row.GetCell(0).ToString()!;
 
             if (!first.StartsWith("ПО КЛАССУ"))
             {
@@ -204,7 +214,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
             for (int i = 0; i < 6; i++)
             {
-                values[i] = decimal.Parse(row.GetCell(i + 1).ToString());
+                values[i] = decimal.Parse(row.GetCell(i + 1).ToString()!);
             }
 
             return true;
@@ -231,7 +241,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
             for (int i = 0; i < 6; i++)
             {
-                values[i] = decimal.Parse(row.GetCell(i + 1).ToString());
+                values[i] = decimal.Parse(row.GetCell(i + 1).ToString()!);
             }
 
             return true;
@@ -240,7 +250,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
         private static bool TryParseTurnoverDocument(IRow row, out decimal[] values)
         {
-            var first = row.GetCell(0).ToString();
+            var first = row.GetCell(0).ToString()!;
 
             if (!first.StartsWith("БАЛАНС"))
             {
@@ -252,7 +262,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
             for (int i = 0; i < 6; i++)
             {
-                values[i] = decimal.Parse(row.GetCell(i + 1).ToString());
+                values[i] = decimal.Parse(row.GetCell(i + 1).ToString()!);
             }
 
             return true;
@@ -273,7 +283,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.Commands
 
             for (int i = 0; i < 6; i++)
             {
-                values[i] = decimal.Parse(row.GetCell(i + 1).ToString());
+                values[i] = decimal.Parse(row.GetCell(i + 1).ToString()!);
             }
 
             return true;

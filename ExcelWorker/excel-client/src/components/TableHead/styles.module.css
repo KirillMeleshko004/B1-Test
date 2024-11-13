@@ -1,14 +1,5 @@
 .th {
   background-color: lightgray;
   height: 50px;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-.th:nth-of-type(1) {
-  border-left: none;
-}
-.th:nth-of-type(5) {
-  border-right: none;
+  border: 1px solid black;
 }

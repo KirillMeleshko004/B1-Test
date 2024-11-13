@@ -1,8 +1,13 @@
-import { turnoverDocument } from "../../utils/interfaces/ExcelAPIInterfaces";
+import { useNavigate } from "react-router-dom";
 import TableData from "../TableData";
 import styles from "./styles.module.css";
 
-function TableRow({ document }: { document: turnoverDocument }) {
+type RowProps<T> = {
+  data: T;
+  hasNavigation: boolean;
+};
+
+function TableRow<T>({ data, hasNavigation }: RowProps<T>) {
   const dateFormatOptions = {
     year: "numeric",
     month: "2-digit",
@@ -13,21 +18,30 @@ function TableRow({ document }: { document: turnoverDocument }) {
     hour12: false,
   } as const;
 
+  const navigate = useNavigate();
+
   return (
-    <tr className={styles.tr}>
-      <TableData>{document.id}</TableData>
-      <TableData>{document.bankName}</TableData>
-      <TableData>
-        {new Date(document.date).toLocaleDateString("En-us", dateFormatOptions)}
-      </TableData>
-      <TableData>{document.currency}</TableData>
-      <TableData>
-        {new Date(document.creationDate).toLocaleDateString(
-          "En-us",
-          dateFormatOptions
-        )}
-      </TableData>
-    </tr>
+    data && (
+      <tr
+        className={styles.tr}
+        onClick={() => {
+          if (!hasNavigation) return;
+          navigate(`/documents/${data["id" as keyof T]}`);
+        }}>
+        {Object.keys(data).map((key, index) => {
+          const value = data[key as keyof T];
+          let stringValue = "";
+          if (key.toLowerCase().includes("date")) {
+            stringValue = new Date(value as string).toLocaleDateString(
+              "En-us",
+              dateFormatOptions
+            );
+          } else stringValue = value as string;
+
+          return <TableData key={index}>{stringValue}</TableData>;
+        })}
+      </tr>
+    )
   );
 }
 

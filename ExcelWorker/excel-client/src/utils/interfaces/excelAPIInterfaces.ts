@@ -2,18 +2,18 @@ export type turnoverDocument = {
   id: string;
   bankName: string;
   title: string;
-  date: Date;
+  date: string;
   currency: string;
-  creationDate: Date;
+  creationDate: string;
 };
 
 export type turnoverDocumentDetails = {
   id: string;
   bankName: string;
   title: string;
-  date: Date;
+  date: string;
   currency: string;
-  creationDate: Date;
+  creationDate: string;
 
   openingBalanceAsset: number;
   openingBalanceLiability: number;
@@ -28,6 +28,7 @@ export type turnoverDocumentDetails = {
 };
 
 export type summaryClass = {
+  id: string;
   number: number;
   title: string;
 
@@ -44,6 +45,7 @@ export type summaryClass = {
 };
 
 export type accountsSummary = {
+  id: string;
   number: number;
 
   openingBalanceAsset: number;
@@ -55,7 +57,7 @@ export type accountsSummary = {
   closingBalanceAsset: number;
   closingBalanceLiability: number;
 
-  account: account[];
+  accounts: account[];
 };
 
 export type account = {

@@ -1,11 +1,11 @@
 import { ChangeEvent, FormEvent, useRef } from "react";
 import styles from "./styles.module.css";
 import { postFormData } from "../../api/apiHelpers";
-import { turnoverDocument } from "../../utils/interfaces/ExcelAPIInterfaces";
 import { uploadEndpoint } from "../../constants/apiConstatns";
+import { turnoverDocument } from "../../utils/interfaces/excelAPIInterfaces";
 
 type fileImportProps = {
-  uploaded: (td: turnoverDocument) => void;
+  uploaded: () => void;
 };
 
 function FileImport({ uploaded }: fileImportProps) {
@@ -24,7 +24,7 @@ function FileImport({ uploaded }: fileImportProps) {
     let result = await postFormData<turnoverDocument>(uploadEndpoint, formData);
 
     if (result.isSuccessful) {
-      uploaded(result.data);
+      uploaded();
       form["excelFile"].value = null;
       alert("Uploaded");
     } else {

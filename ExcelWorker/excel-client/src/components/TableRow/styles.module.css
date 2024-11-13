@@ -1,6 +1,24 @@
+.tr:hover,
+.tr:active {
+  cursor: pointer;
+}
+
+.tr {
+  transition: filter 0.25s;
+  max-width: 100%;
+}
+
+.tr:hover {
+  filter: brightness(0.7);
+}
+
+.tr:active {
+  filter: brightness(0.95);
+}
+
 .tr:nth-child(even) {
   background-color: lightgray;
 }
 .tr:nth-child(odd) {
-  background-color: darkgray;
+  background-color: rgb(185, 185, 185);
 }

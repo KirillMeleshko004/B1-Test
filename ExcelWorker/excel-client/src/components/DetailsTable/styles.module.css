@@ -1,0 +1,8 @@
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+  font-size: 25px;
+  padding: 0 0 20px 0;
+}

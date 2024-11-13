@@ -16,8 +16,8 @@ var app = builder.Build();
 
 #region Configure app pipeline
 
-// var logger = app.Services.GetRequiredService<ILogger<Program>>();
-// app.ConfigureExceptionHandler(logger);
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+app.ConfigureExceptionHandler(logger);
 
 app.UseCors("default");
 

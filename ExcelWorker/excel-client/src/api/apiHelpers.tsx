@@ -1,5 +1,19 @@
 import { serverApiURL } from "../constants/apiConstatns";
 
+export async function getSingleData<T>(
+  endPoint: string
+): Promise<ResponseModel<T>> {
+  let payload: RequestInit = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+
+  return await sendRequest<T>(serverApiURL + endPoint, payload);
+}
+
 export async function getData<T>(
   endPoint: string,
   page: number,

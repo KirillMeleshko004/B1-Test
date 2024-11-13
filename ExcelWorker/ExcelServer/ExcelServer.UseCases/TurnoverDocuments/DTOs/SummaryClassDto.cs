@@ -2,6 +2,7 @@ namespace ExcelServer.UseCases.TurnoverDocuments.DTOs
 {
     public record SummaryClassDto
     {
+        public Guid Id { get; set; }
         public int Number { get; set; }
         public string Title { get; set; } = null!;
 

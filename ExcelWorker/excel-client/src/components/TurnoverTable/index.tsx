@@ -1,6 +1,7 @@
-import { turnoverDocument } from "../../utils/interfaces/ExcelAPIInterfaces";
-import TableHeader from "../TableHeader";
+import { turnoverDocument } from "../../utils/interfaces/excelAPIInterfaces";
+import Table from "../Table";
 import TableRow from "../TableRow";
+import TurnoverHeader from "../TurnoverHeader";
 import styles from "./styles.module.css";
 
 type tableProps = {
@@ -23,43 +24,38 @@ function TurnoverTable({
   hasNext,
 }: tableProps) {
   return (
-    <>
-      <div className={styles.paging}>
-        <div>
-          Page {page} of {totalPages}
+    data && (
+      <>
+        <div className={styles.paging}>
+          <div>
+            Page {page} of {totalPages}
+          </div>
+          <button
+            onClick={prevPage}
+            disabled={!hasPrev}>
+            Prev
+          </button>
+          <button
+            onClick={nextPage}
+            disabled={!hasNext}>
+            Next
+          </button>
         </div>
-        <button
-          onClick={prevPage}
-          disabled={!hasPrev}>
-          Prev
-        </button>
-        <button
-          onClick={nextPage}
-          disabled={!hasNext}>
-          Next
-        </button>
-      </div>
-      <table className={styles.table}>
-        <TableHeader
-          columns={[
-            "Id",
-            "Bank name",
-            "Date",
-            "Currency",
-            "Creation date",
-          ]}></TableHeader>
-
-        <tbody>
-          {data?.map((d) => {
-            return (
-              <TableRow
-                key={d.id}
-                document={d}></TableRow>
-            );
-          })}
-        </tbody>
-      </table>
-    </>
+        <Table>
+          <TurnoverHeader></TurnoverHeader>
+          <tbody>
+            {data.map((el, ind) => {
+              return (
+                <TableRow
+                  hasNavigation={true}
+                  data={el}
+                  key={ind}></TableRow>
+              );
+            })}
+          </tbody>
+        </Table>
+      </>
+    )
   );
 }
 

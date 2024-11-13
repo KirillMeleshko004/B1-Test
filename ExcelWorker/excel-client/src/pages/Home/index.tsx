@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FileImport from "../../components/FileImport";
 import TurnoverTable from "../../components/TurnoverTable";
 import styles from "./styles.module.css";
-import { turnoverDocument } from "../../utils/interfaces/ExcelAPIInterfaces";
+import { turnoverDocument } from "../../utils/interfaces/excelAPIInterfaces";
 import { getData, PageMetadata } from "../../api/apiHelpers";
 import { documentsEndpoint } from "../../constants/apiConstatns";
 
@@ -19,39 +19,32 @@ function HomePage() {
   });
   const [totalPages, setTotalPages] = useState<number>();
 
-  const [shouldRequest, setShouldRequest] = useState(true);
+  const shouldRequest = useRef(true);
 
   useEffect(() => {
-    if (!shouldRequest) return;
-    setShouldRequest(false);
-
-    async function fetchData() {
-      let result = await getData<turnoverDocument[]>(
-        documentsEndpoint,
-        paging.CurrentPage,
-        10
-      );
-
-      if (result.isSuccessful == true) {
-        setData(result.data);
-        setPaging(result.pageData);
-        setTotalPages(result.pageData.TotalPages);
-        console.log(result.pageData);
-      } else {
-        alert(result.errorMessage);
-      }
-    }
+    if (!shouldRequest.current) return;
+    shouldRequest.current = false;
 
     fetchData();
-  }, [shouldRequest, paging]);
 
-  function dataUploaded(td: turnoverDocument) {
-    if (!data) {
-      setData([td]);
-      return;
+    return (): void => {};
+  }, [paging]);
+
+  async function fetchData() {
+    let result = await getData<turnoverDocument[]>(
+      documentsEndpoint,
+      paging.CurrentPage,
+      10
+    );
+
+    if (result.isSuccessful == true) {
+      setData(result.data);
+      setPaging(result.pageData);
+      setTotalPages(result.pageData.TotalPages);
+      console.log(result.pageData);
+    } else {
+      alert(result.errorMessage);
     }
-
-    setShouldRequest(true);
   }
 
   function nextPage() {
@@ -59,7 +52,7 @@ function HomePage() {
       return;
     }
 
-    setShouldRequest(true);
+    shouldRequest.current = true;
     setPaging({ ...paging, CurrentPage: paging.CurrentPage + 1 });
   }
 
@@ -68,13 +61,13 @@ function HomePage() {
       return;
     }
 
-    setShouldRequest(true);
+    shouldRequest.current = true;
     setPaging({ ...paging, CurrentPage: paging.CurrentPage - 1 });
   }
 
   return (
     <main className={styles.main}>
-      <FileImport uploaded={dataUploaded}></FileImport>
+      <FileImport uploaded={fetchData}></FileImport>
       <TurnoverTable
         data={data}
         page={paging.CurrentPage}
